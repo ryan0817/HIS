@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>HIS</title>
+
+    <!--
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+	<script src="js/bootstrap.min.js"></script>
+	-->
+	<style type="text/css">
+		#header-navbar {
+			background-color: #8bc34a;
+		}
+
+		#logo {
+		    color: #F0F8FF;
+		}
+
+	</style>
+
+	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+  	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+
+	<script type="text/javascript">
+		$(function() {
+		    $( "#birthday" ).datepicker({
+		    	dateFormat: "yy/mm/dd",
+		    	changeMonth: true,
+      			changeYear: true,
+      			yearRange: "1914:2020"
+		    });
+		});
+
+		$(function() {
+		    $( "#sick_receive_date" ).datepicker({
+		    	dateFormat: "yy/mm/dd",
+		    	changeMonth: true,
+      			changeYear: true,
+      			yearRange: "2011:2020"
+		    });
+		});
+
+        $(function() {
+            $( "#care_date" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2011:2020"
+            });
+        });
+
+        $(function() {
+            $( "#recDateSta" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2011:2020"
+            });
+        });
+
+        $(function() {
+            $( "#recDateEnd" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2011:2020"
+            });
+        });
+
+        $(function() {
+            $( "#carDateSta" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2011:2020"
+            });
+        });
+
+        $(function() {
+            $( "#carDateEnd" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2011:2020"
+            });
+        });
+	</script>
+</head>
+<body>
+  	<div class="container-fluid">
+  		<!--HEADER -->
+  		<header class="navbar" id="header-navbar">
+  			<h1 id="logo">收案管理系統</h1>
+  		</header>
+        {% if request.user.is_authenticated %}
+            <!-- Menu -->
+            <div class="raw-fluid">
+                <div class="span2">
+                    <ul class="nav nav-list">
+                      <li><a href="/new/"><i class="icon-pencil"></i> 新增紀錄</a></li>
+                      <li><a href="/history/"><i class="icon-tasks"></i> 歷史紀錄</a></li>
+                      <li><a href="/report/"><i class="icon-list-alt"></i> 報表</a></li>
+                      <li><a href="/export/"><i class="icon-list-alt"></i> 匯出全部資料</a></li>
+                      <li><a href="/accounts/logout/"><i class="icon-list-alt"></i> 登出</a></li>
+                    </ul>
+                </div>
+
+                <!-- Content -->
+                <div class="span10">
+                    {% if msg  %}<div class="alert alert-success">{{ msg }}</div>{% endif %}
+                    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        {% else %}
+            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
+        {% endif %}
+
+  		<!--Footer -->
+  		<div class="raw-fulid text-center">
+  			<small style="color: blue">Copyright 2014 Ryan Ho</small>
+  		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Content -->
+<script type="text/javascript">
+    function check(){
+        $.ajax({
+                url: "/check/",
+                data: $('#sick_id').serialize(),
+                type:"get",
+                dataType:'text',
+
+                success: function(msg){
+                    if(msg != ''){
+                        ret = msg.split(",");
+                        document.getElementById("sick_id").value = ret[0];
+                        document.getElementById("name").value = ret[1];
+                        document.getElementById("pid").value = ret[2];
+                        document.getElementById("birthday").value = ret[4];
+                        document.getElementById("sick_result").value = ret[6];
+
+                        sexSel = document.getElementById("sex");
+                        for (var i=0,len=sexSel.options.length; i<len;i++){
+                          if (sexSel.options[i].value == ret[3]){
+                              sexSel.options[i].selected = true;
+                          }else{
+                              sexSel.options[i].selected = false;
+                          }
+                        }
+
+                        sourceSel = document.getElementById("source");
+                        for (var i=0,len=sourceSel.options.length; i<len;i++){
+                          if (sourceSel.options[i].value == ret[5]){
+                                sourceSel.options[i].selected = true;
+                          }else{
+                              sourceSel.options[i].selected = false;
+                          }
+                        }
+                    }
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert(xhr.status);
+                    alert(thrownError);
+                 }
+            });
+    }
+</script>
+<form class="form-horizontal" method="post" action="/new/">
+{% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="lead text-info">新增紀錄</legend>
+      </div>
+    <div class="control-group">
+        <label class="control-label" for="input01">病例號碼</label>
+        <div class="controls">
+            <div class="input-append">
+                <input type="text" id="sick_id" name="sick_id" value="{{ sickRecord.sick_id }}" placeholder="病例號碼" class="input-xlarge" required >
+                <button class="btn" type="button" onclick="check();">Check</button>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="input01">姓名</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <input type="text" id="name" name="name" value="{{ sickRecord.name }}" placeholder="姓名" class="input-xlarge" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">身分證字號</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <input type="text" id="pid" name="pid" value="{{ sickRecord.pid }}" placeholder="身分證字號" class="input-xlarge" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">性別</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <select class="input-xlarge" id="sex" name="sex">
+                    <option value="M" {% if 'M' == sickRecord.sex %}selected{% endif %}>男性</option>
+                    <option value="F" {% if 'F' == sickRecord.sex %}selected{% endif %}>女性</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">出生年月日</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <input type="text" id="birthday" name="birthday" value="{{ sickRecord.birthday|date:"Y/n/j" }}" placeholder="yyyy/mm/dd">
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">收單來源</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-folder-open"></i></span>
+                <select class="input-xlarge" id="source" name="source" required>
+                    {% for source in sources %}
+                        <option value="{{ source.id }}" {% if source.id == sickRecord.source.id %}selected{% endif %}>{{ source.source_value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">收單日期</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-folder-open"></i></span>
+                <input type="text" id="sick_receive_date" name="sick_receive_date" value="{{ sickRecord.sick_receive_date|date:"Y/n/j" }}" placeholder="yyyy/mm/dd">
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">診斷</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-folder-open"></i></span>
+                <input type="text" id="sick_result" name="sick_result" value="{{ sickRecord.sick_result }}" placeholder="診斷" class="input-xlarge">
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">探視日期</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-heart"></i></span>
+                <input type="text" id="care_date" name="care_date" value="{{ sickRecord.care_date|date:"Y/n/j" }}" placeholder="yyyy/mm/dd">
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">DT</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-heart"></i></span>
+                <input type="text" id="care_dt" name="care_dt" placeholder="DT" value="{{ sickRecord.care_dt }}" class="input-xlarge">
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">情緒問題</label>
+        <div class="controls inline">
+            {% for issue in issuesOpt %}
+                <input type="checkbox" id="issues" name = "issues" value="{{ issue.issue_key }}"
+                       {% for iss in sickRecord.issues.all %}
+                           {% if issue.issue_key == iss.issue_key %}
+                                checked="checked"
+                           {% endif %}
+                       {% endfor %} >
+                {{ issue.issue_value }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="input01">探視</label>
+        <div class="controls inline">
+            <input type="radio" name="care_check" id="care_check" value="Yes" {% if 'Yes' == sickRecord.care_check %}checked="checked" {% endif %}> Yes
+            <input type="radio" name="care_check" id="care_check" value="No" {% if 'No' == sickRecord.care_check %}checked="checked" {% endif %}> No
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">晤談內容</label>
+        <div class="controls">
+            <textarea class="form-control" rows="8" id="care_content" name="care_content">{{ sickRecord.care_content }}</textarea>
+        </div>
+    </div>
+    </fieldset>
+
+    <!-- Button-->
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary ">新增紀錄</button>
+        <button type="button" class="btn" onclick="this.form.reset();">清除</button>
+    </div>
+</form>
+
+
+{% endblock %}

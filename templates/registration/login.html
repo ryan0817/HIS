@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+  	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <title></title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="span4 offset4 well">
+                <legend>Please Sign In</legend>
+                {% if form.errors %}
+                    <div class="alert alert-error">
+                        <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{% url 'django.contrib.auth.views.login' %}" accept-charset="UTF-8">
+                    {% csrf_token %}
+                    <input type="text" id="username" class="span4" name="username" placeholder="Username">
+                    <input type="password" id="password" class="span4" name="password" placeholder="Password">
+                    <input type="hidden" name="next" value="/new/" />
+                    <button type="submit" name="submit" class="btn btn-info btn-block">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
