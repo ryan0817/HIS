@@ -224,7 +224,7 @@ def edit(request):
             for iss in inpIss:
                 sickRecord.issues.add(Issue.objects.get(issue_key=iss))
             form.save()
-            msg = '更新資料成功！'
+            msg = '更新資料成功！！'
         else :
             message = form.errors
             print(message)
